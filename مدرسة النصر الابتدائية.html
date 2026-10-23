@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>مدرسة النصر الابتدائية</title>
+<style>
+:root{--bg:#f6f4ee;--card:#fff;--tx:#1d2b24;--mut:#6b7a72;--pr:#1f6f4a;--ac:#d9a441;--bd:#e3dfd2;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a16;--card:#1b2620;--tx:#eef2ee;--mut:#9fb0a5;--pr:#4fbf8a;--ac:#e0b45a;--bd:#2d3a32;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121a16;--card:#1b2620;--tx:#eef2ee;--mut:#9fb0a5;--pr:#4fbf8a;--ac:#e0b45a;--bd:#2d3a32;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Cairo","Segoe UI",Tahoma,sans-serif;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
+h1,h2,h3{margin:0 0 10px}h1{font-size:22px}h2{font-size:18px}
+header{background:var(--pr);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;justify-content:space-between}
+header b{font-size:18px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--bd)}
+nav button{white-space:nowrap;border:1px solid var(--bd);background:var(--bg);color:var(--tx);padding:7px 14px;border-radius:20px;cursor:pointer;font:inherit}
+nav button.on{background:var(--pr);color:#fff;border-color:var(--pr)}
+input,select,button.b{font:inherit;padding:9px 11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);width:100%}
+button.b{background:var(--pr);color:#fff;border:0;cursor:pointer;width:auto}button.b.g{background:var(--bd);color:var(--tx)}button.b.r{background:#b8483c}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:480px}th,td{padding:8px;border-bottom:1px solid var(--bd);text-align:right}th{color:var(--mut);font-weight:600;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}.st{background:var(--bg);border-radius:12px;padding:14px;text-align:center}.st b{display:block;font-size:28px;color:var(--pr)}
+.av{width:56px;height:56px;border-radius:50%;object-fit:cover;background:var(--bd);display:inline-flex;align-items:center;justify-content:center;color:var(--mut);font-size:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}.pc{text-align:center;background:var(--bg);border-radius:14px;padding:14px}.pc .av{width:84px;height:84px;margin-bottom:6px}
+.medal{color:var(--ac);font-weight:700}.mut{color:var(--mut);font-size:13px}.err{color:#b8483c;font-size:14px;min-height:20px}
+.auth{max-width:380px;margin:8vh auto}.auth input{margin-bottom:10px}a.l{color:var(--pr);cursor:pointer;font-size:14px}
+</style></head><body>
+<div id="app"></div>
+<script>
+var S={u:null,tab:'home',mode:'login',err:''};
+var D={students:[],teachers:[],att:{},grades:{}};
+var USERS=[];
+function ld(k,f){try{var v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){alert('تعذر الحفظ: قد تكون الصور كبيرة جداً')}}
+D=ld('nasr_data',D);USERS=ld('nasr_users',[]);
+function save(){sv('nasr_data',D)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function $(id){return document.getElementById(id)}
+var SUBJ=['اللغة العربية','الرياضيات','العلوم','اللغة الإنجليزية'];
+var TABS=[['home','الرئيسية'],['students','الطلاب'],['classes','الفصول'],['att','الحضور'],['grades','الدرجات'],['teachers','المعلمون'],['top','أوائل الطلاب']];
+function avg(s){var g=D.grades[s.id];if(!g)return null;var v=SUBJ.map(function(x){return Number(g[x])}).filter(function(x){return !isNaN(x)&&g[SUBJ[0]]!==undefined});var a=SUBJ.filter(function(x){return g[x]!==''&&g[x]!=null}).map(function(x){return Number(g[x])});return a.length?a.reduce(function(p,c){return p+c},0)/a.length:null}
+function pic(p,n,c){return p?'<img class="av" src="'+p+'" alt="">':'<span class="av">'+esc((n||'؟').charAt(0))+'</span>'}
+function readImg(inp,cb){var f=inp.files[0];if(!f)return cb('');var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement('canvas'),m=160,k=Math.min(1,m/Math.max(im.width,im.height));c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.7))};im.src=r.result};r.readAsDataURL(f)}
+function render(){var a=$('app');if(!S.u){a.innerHTML=authView();return}
+a.innerHTML='<header><b>🏫 مدرسة النصر الابتدائية</b><span>'+esc(S.u)+' <button class="b g" onclick="S.u=null;render()">خروج</button></span></header><nav>'+TABS.map(function(t){return '<button class="'+(S.tab==t[0]?'on':'')+'" onclick="S.tab=\''+t[0]+'\';render()">'+t[1]+'</button>'}).join('')+'</nav><div class="wrap">'+view()+'</div>'}
+function authView(){var m=S.mode,h='<div class="auth card"><h1>🏫 مدرسة النصر الابتدائية</h1><h2>'+(m=='login'?'تسجيل الدخول':m=='signup'?'إنشاء حساب جديد':'استعادة كلمة المرور')+'</h2><input id="au" placeholder="اسم المستخدم" autocomplete="username"><input id="ap" type="password" placeholder="'+(m=='forgot'?'كلمة المرور الجديدة':'كلمة المرور')+'">';
+if(m=='signup')h+='<input id="ap2" type="password" placeholder="تأكيد كلمة المرور">';
+h+='<div class="err">'+esc(S.err)+'</div><button class="b" onclick="doAuth()">'+(m=='login'?'دخول':m=='signup'?'إنشاء الحساب':'تغيير كلمة المرور')+'</button><p>';
+if(m=='login')h+='<a class="l" onclick="sm(\'signup\')">إنشاء حساب جديد</a> · <a class="l" onclick="sm(\'forgot\')">نسيت كلمة المرور؟</a>';else h+='<a class="l" onclick="sm(\'login\')">العودة لتسجيل الدخول</a>';return h+'</p></div>'}
+function sm(m){S.mode=m;S.err='';render()}
+function doAuth(){var u=$('au').value.trim(),p=$('ap').value,m=S.mode,x=USERS.filter(function(z){return z.u==u})[0];
+if(!u||!p){S.err='أدخل اسم المستخدم وكلمة المرور';return render()}
+if(m=='signup'){if(x)S.err='اسم المستخدم موجود';else if(p.length<4)S.err='كلمة المرور 4 أحرف على الأقل';else if(p!=$('ap2').value)S.err='كلمتا المرور غير متطابقتين';else{USERS.push({u:u,p:p});sv('nasr_users',USERS);S.u=u;S.err=''}}
+else if(m=='forgot'){if(!x)S.err='المستخدم غير موجود';else{x.p=p;sv('nasr_users',USERS);S.mode='login';S.err='تم التغيير، سجّل الدخول'}}
+else{if(x&&x.p==p){S.u=u;S.err=''}else S.err='بيانات الدخول غير صحيحة'}
+render()}
+function view(){return {home:vHome,students:vStu,classes:vCls,att:vAtt,grades:vGr,teachers:vTea,top:vTop}[S.tab]()}
+function vHome(){var d=D.students.length,t=D.teachers.length,td=new Date().toISOString().slice(0,10),at=D.att[td]||{},p=Object.keys(at).filter(function(k){return at[k]}).length;
+return '<div class="card"><h1>مرحباً بك في مدرسة النصر الابتدائية</h1><p class="mut">نظام إدارة الشؤون التعليمية: الطلاب، الفصول، الحضور، الدرجات، المعلمون وأوائل الطلاب.</p><div class="stats"><div class="st"><b>'+d+'</b>طالب</div><div class="st"><b>'+t+'</b>معلم</div><div class="st"><b>'+p+'</b>حاضر اليوم</div></div></div>'}
+function vStu(){return '<div class="card"><h2>إضافة طالب</h2><div class="row"><input id="sn" placeholder="اسم الطالب"><select id="sg">'+[1,2,3,4,5,6].map(function(i){return '<option value="'+i+'">الصف '+i+'</option>'}).join('')+'</select><input id="ss" placeholder="الفصل (أ، ب...)"><input id="sp" type="file" accept="image/*"></div><button class="b" onclick="addStu()">إضافة</button></div><div class="card tw"><table><tr><th></th><th>الاسم</th><th>الصف</th><th>الفصل</th><th></th></tr>'+(D.students.map(function(s){return '<tr><td>'+pic(s.p,s.n)+'</td><td>'+esc(s.n)+'</td><td>'+s.g+'</td><td>'+esc(s.c)+'</td><td><button class="b r" onclick="del(\'students\',\''+s.id+'\')">حذف</button></td></tr>'}).join('')||'<tr><td colspan="5" class="mut">لا يوجد طلاب بعد</td></tr>')+'</table></div>'}
+function addStu(){var n=$('sn').value.trim();if(!n)return;readImg($('sp'),function(p){D.students.push({id:'s'+Date.now(),n:n,g:$('sg').value,c:$('ss').value.trim(),p:p});save();render()})}
+function del(k,id){if(!confirm('تأكيد الحذف؟'))return;D[k]=D[k].filter(function(x){return x.id!=id});save();render()}
+function vCls(){var m={};D.students.forEach(function(s){var k='الصف '+s.g+(s.c?' - '+s.c:'');m[k]=(m[k]||0)+1});var k=Object.keys(m).sort();return '<div class="card"><h2>الفصول</h2><div class="grid">'+(k.map(function(x){return '<div class="pc"><b>'+esc(x)+'</b><div class="mut">'+m[x]+' طالب</div></div>'}).join('')||'<span class="mut">أضف طلاباً لتظهر الفصول</span>')+'</div></div>'}
+var AD=new Date().toISOString().slice(0,10);
+function vAtt(){var at=D.att[AD]||{};return '<div class="card"><h2>تسجيل الحضور</h2><div class="row"><input type="date" value="'+AD+'" onchange="AD=this.value;render()"></div><div class="tw"><table><tr><th>الطالب</th><th>الصف</th><th>الحالة</th></tr>'+(D.students.map(function(s){var p=at[s.id];return '<tr><td>'+esc(s.n)+'</td><td>'+s.g+' '+esc(s.c)+'</td><td><button class="b'+(p===true?'':' g')+'" onclick="mark(\''+s.id+'\',true)">حاضر</button> <button class="b'+(p===false?' r':' g')+'" onclick="mark(\''+s.id+'\',false)">غائب</button></td></tr>'}).join('')||'<tr><td colspan="3" class="mut">لا يوجد طلاب</td></tr>')+'</table></div></div>'}
+function mark(id,v){D.att[AD]=D.att[AD]||{};D.att[AD][id]=v;save();render()}
+function vGr(){return '<div class="card"><h2>الدرجات (من 100)</h2><div class="tw"><table><tr><th>الطالب</th>'+SUBJ.map(function(x){return '<th>'+x+'</th>'}).join('')+'<th>المعدل</th></tr>'+(D.students.map(function(s){var g=D.grades[s.id]||{},a=avg(s);return '<tr><td>'+esc(s.n)+'</td>'+SUBJ.map(function(x,i){return '<td><input type="number" min="0" max="100" style="width:80px" value="'+(g[x]==null?'':g[x])+'" onchange="setG(\''+s.id+'\','+i+',this.value)"></td>'}).join('')+'<td><b>'+(a==null?'-':a.toFixed(1))+'</b></td></tr>'}).join('')||'<tr><td colspan="6" class="mut">لا يوجد طلاب</td></tr>')+'</table></div></div>'}
+function setG(id,i,v){D.grades[id]=D.grades[id]||{};D.grades[id][SUBJ[i]]=v;save();render()}
+function vTea(){return '<div class="card"><h2>إضافة معلم</h2><div class="row"><input id="tn" placeholder="اسم المعلم"><input id="tj" placeholder="المادة"><input id="tp" type="file" accept="image/*"></div><button class="b" onclick="addTea()">إضافة</button></div><div class="card"><h2>المعلمون</h2><div class="grid">'+(D.teachers.map(function(t){return '<div class="pc">'+pic(t.p,t.n)+'<div><b>'+esc(t.n)+'</b></div><div class="mut">'+esc(t.j)+'</div><button class="b r" onclick="del(\'teachers\',\''+t.id+'\')">حذف</button></div>'}).join('')||'<span class="mut">لا يوجد معلمون بعد</span>')+'</div></div>'}
+function addTea(){var n=$('tn').value.trim();if(!n)return;readImg($('tp'),function(p){D.teachers.push({id:'t'+Date.now(),n:n,j:$('tj').value.trim(),p:p});save();render()})}
+function vTop(){var l=D.students.map(function(s){return{s:s,a:avg(s)}}).filter(function(x){return x.a!=null}).sort(function(a,b){return b.a-a.a}).slice(0,5);
+return '<div class="card"><h2>🏆 أوائل الطلاب</h2><div class="grid">'+(l.map(function(x,i){return '<div class="pc">'+pic(x.s.p,x.s.n)+'<div class="medal">'+['🥇','🥈','🥉','4','5'][i]+'</div><b>'+esc(x.s.n)+'</b><div class="mut">الصف '+x.s.g+' '+esc(x.s.c)+'</div><div>'+x.a.toFixed(1)+'%</div></div>'}).join('')||'<span class="mut">أدخل الدرجات لتظهر قائمة الأوائل</span>')+'</div></div>'}
+render();
+</script></body></html>
