@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مدرسة النصر الابتدائية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+ <div class="wrap bar">
+  <div class="logo">🏫 مدرسة النصر الابتدائية</div>
+  <nav id="nav"><ul>
+   <li><a href="#home">الرئيسية</a></li><li><a href="#about">عن المدرسة</a></li><li><a href="#grades">الصفوف</a></li><li><a href="#news">الأخبار</a></li><li><a href="#schedule">الجدول</a></li><li><a href="#contact">اتصل بنا</a></li>
+  </ul></nav>
+  <div class="tools"><button class="icon" id="theme" aria-label="تبديل الوضع">🌙</button><button class="icon" id="menuBtn" aria-label="القائمة">☰</button></div>
+ </div>
+</header>
+
+<div class="hero" id="home">
+ <div class="wrap">
+  <h1>أهلًا بكم في مدرسة النصر الابتدائية</h1>
+  <p>نبني جيلًا متعلمًا ومبدعًا، في بيئة آمنة تجمع بين العلم والقيم والمرح.</p>
+  <a class="btn" href="#contact">سجّل ابنك الآن</a><a class="btn alt" href="#about">تعرّف علينا</a>
+ </div>
+</div>
+
+<div class="wrap stats">
+ <div class="stat"><b data-n="650">0</b><span>طالب وطالبة</span></div>
+ <div class="stat"><b data-n="42">0</b><span>معلم ومعلمة</span></div>
+ <div class="stat"><b data-n="18">0</b><span>فصل دراسي</span></div>
+ <div class="stat"><b data-n="25">0</b><span>سنة من الخبرة</span></div>
+</div>
+
+<section id="about"><div class="wrap">
+ <h2>عن المدرسة</h2>
+ <p class="sub">رسالتنا تقديم تعليم متميز يراعي قدرات كل طفل ويغرس فيه حب التعلم.</p>
+ <div class="grid">
+  <div class="card"><div class="em">🎯</div><h3>رؤيتنا</h3><p>مدرسة رائدة تُخرّج أطفالًا واثقين ومبدعين ومتمسكين بقيمهم.</p></div>
+  <div class="card"><div class="em">📚</div><h3>رسالتنا</h3><p>توفير تعليم نشط يعتمد على اللعب والتجربة وتنمية المهارات الأساسية.</p></div>
+  <div class="card"><div class="em">🤝</div><h3>قيمنا</h3><p>الاحترام، الصدق، التعاون، وحب الوطن.</p></div>
+ </div>
+</div></section>
+
+<section id="grades" style="background:color-mix(in srgb,var(--primary) 5%,var(--bg))"><div class="wrap">
+ <h2>الصفوف الدراسية</h2>
+ <p class="sub">اختر الصف لمعرفة موادّه.</p>
+ <div class="tabs" id="tabs"></div>
+ <div class="grid" id="subjects"></div>
+</div></section>
+
+<section id="news"><div class="wrap">
+ <h2>أخبار وفعاليات</h2>
+ <p class="sub">آخر ما يحدث في المدرسة.</p>
+ <div class="grid">
+  <div class="card"><div class="date">الأسبوع القادم</div><h3>🎨 معرض الرسم السنوي</h3><p>معرض لأعمال التلاميذ الفنية بحضور أولياء الأمور.</p></div>
+  <div class="card"><div class="date">الشهر الحالي</div><h3>⚽ بطولة الصفوف الرياضية</h3><p>منافسات ودية في كرة القدم والجري بين الصفوف.</p></div>
+  <div class="card"><div class="date">قريبًا</div><h3>📖 مسابقة القراءة</h3><p>مسابقة لتشجيع القراءة مع جوائز قيّمة للفائزين.</p></div>
+ </div>
+</div></section>
+
+<section id="schedule" style="background:color-mix(in srgb,var(--primary) 5%,var(--bg))"><div class="wrap">
+ <h2>الجدول اليومي</h2>
+ <p class="sub">مواعيد اليوم الدراسي.</p>
+ <div class="scroll"><table>
+  <tr><th>الوقت</th><th>النشاط</th></tr>
+  <tr><td>7:45</td><td>الطابور الصباحي</td></tr>
+  <tr><td>8:15 – 10:15</td><td>الحصص الأولى والثانية</td></tr>
+  <tr><td>10:15 – 10:45</td><td>الفسحة</td></tr>
+  <tr><td>10:45 – 12:45</td><td>الحصص الثالثة والرابعة</td></tr>
+  <tr><td>12:45</td><td>الانصراف</td></tr>
+ </table></div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+ <h2>اتصل بنا</h2>
+ <p class="sub">اترك رسالتك وسنرد عليك في أقرب وقت.</p>
+ <form id="form" novalidate>
+  <input id="name" placeholder="اسم ولي الأمر" required>
+  <input id="phone" type="tel" placeholder="رقم الهاتف" required>
+  <textarea id="text" rows="4" placeholder="رسالتك" required></textarea>
+  <button class="btn" type="submit">إرسال</button>
+  <div class="msg" id="msg"></div>
+ </form>
+</div></section>
+
+<footer>© <span id="y"></span> مدرسة النصر الابتدائية — جميع الحقوق محفوظة</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
